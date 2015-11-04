@@ -1,0 +1,8 @@
+name: EVapp
+account: castor
+server: shinyapps.io
+bundleId: 304438
+url: https://castor.shinyapps.io/EVapp
+when: 1446663663.55222
+asMultiple: FALSE
+asStatic: FALSE

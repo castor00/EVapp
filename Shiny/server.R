@@ -1,5 +1,6 @@
 library(shiny)
 require(xlsx)
+library(ggplot2)
 
 
 
@@ -25,10 +26,7 @@ shinyServer(
                         read.xlsx2(inFile$datapath,1,header = TRUE, colClasses= c("numeric","numeric","numeric","numeric"))
                 })
                 
-                ## separate columns of PV, AC, EV  
-                PV <- reactive({dt()[,PVcol()]})
-                AC <- reactive({dt()[,ACcol()]})
-                EV <- reactive({dt()[,EVcol()]})
+               
                 
                 ## how many rows has the file
                 ms <- reactive({sum(is.na(AC()))})
@@ -74,6 +72,14 @@ shinyServer(
                 ACcol <- reactive({input$AC})
                 EVcol <- reactive({input$EV})
                 
+                ## separate columns of PV, AC, EV  
+                AD <- reactive({dt()[,ADcol()]})
+                PV <- reactive({dt()[,PVcol()]})
+                AC <- reactive({dt()[,ACcol()]})
+                EV <- reactive({dt()[,EVcol()]})
+                
+                
+                
                 ## input of actual time
                 t <- reactive({as.numeric(input$AD)})
                 
@@ -117,7 +123,30 @@ shinyServer(
                 } else SCIt()})
                 EACt <- reactive({t() + (PD() - ESt())/PF()})
                 
+                ## Plot
+                
+                plot.dt <- reactive({
+                                z<- cbind(as.data.frame(AD()),
+                                      as.data.frame(PV()),
+                                      as.data.frame(AC()),
+                                      as.data.frame(EV())
+                                )
+                                names(z) <- c("AD","PV","AC","EV")      
+                                z
+                                })
+                
+                
                 ## Outputs
+                output$plot <- renderPlot({
+                                ggplot(data=plot.dt(), aes(x=AD)) + 
+                                geom_line(aes(y=PV,color= "PV")) +
+                                geom_line(aes(y=AC,color= "AC")) +
+                                geom_line(aes(y=EV,color= "EV")) +
+                                scale_colour_manual("",breaks = c("PV", "AC", "EV"),
+                                             values = c("blue", "green", "red"))+
+                                xlab("Time")+
+                                ylab("Values")
+                  })   
                 output$data <- renderTable({dt()})
                 output$SV <- renderPrint({SV()})
                 output$CV <- renderPrint({CV()})

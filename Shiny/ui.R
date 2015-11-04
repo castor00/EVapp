@@ -18,6 +18,7 @@ shinyUI(fluidPage(
                         mainPanel(
                                 h4("Preview of Uploaded Data"),
                                 tableOutput("data"))
+                                
                         )),
                 
                 tabPanel("Output",
@@ -36,7 +37,10 @@ shinyUI(fluidPage(
                                 h4("Project's Schedule Cost Index (SCI(t)) is"),
                                 textOutput("SCIt"),
                                 h4("Project's Estimated at Completion Time (EAC(t)) is"),
-                                textOutput("EAC")
+                                textOutput("EAC"),
+                                
+                                
+                                plotOutput("plot")
                         ))
                 ),
                 tabPanel("Documentation",

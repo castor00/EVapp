@@ -38,17 +38,17 @@ EAC3 <- t + (PD - ESt)/PF3
 
 ## Plot
 
-plotdata <- list(PV = data$PV, AC = data$AC[1:t], EV = data$EV[1:t])
-xrange <- range(1:nrow(data)) 
-yrange <- range(0,data$AC,data$PV, data$EV )
+plotdata <- list(PV = d.ac$PV, AC = d.ac$AC[1:t], EV = d.ac$EV[1:t])
+xrange <- range(1:nrow(d.ac)) 
+yrange <- range(0,d.ac$AC,d.ac$PV, d.ac$EV )
 plotchar <- c(1,2,3)
 colors <- c("red","green","blue")
 
 plot(xrange, yrange, type="n", xlab="Time",
      ylab="Value" ) 
-lines(data$PV, type="b", lwd=1.5, pch = plotchar[1],col=colors[1])
-lines(data$EV[1:5], type="b", lwd=1.5, pch = plotchar[2],col=colors[2])
-lines(data$AC[1:5], type="b", lwd=1.5, pch = plotchar[3],col=colors[3])
+lines(d.ac$PV, type="b", lwd=1.5, pch = plotchar[1],col=colors[1])
+lines(d.ac$EV[1:t], type="b", lwd=1.5, pch = plotchar[2],col=colors[2])
+lines(d.ac$AC[1:t], type="b", lwd=1.5, pch = plotchar[3],col=colors[3])
 
 legend(xrange[1], yrange[2], c("Planned Value", "Earned Value", "Actual Cost"), cex=0.8, col=colors,
        pch=plotchar)
